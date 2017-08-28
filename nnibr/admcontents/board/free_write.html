@@ -1,0 +1,81 @@
+<?
+	include "_da.php";
+	include $da_adm_path."/inc/head.html";
+	if($idx)$data = $dbcon->getOneRow("select * from da_data where idx = $idx ");
+	$qstr = "&skey=".$skey."&mnu_id=".$mnu_id."&page=".$page;
+?>
+<script>
+$(document).ready(function(){
+	
+});
+</script>
+
+<body style="min-width:998px">
+<div class="fix_wrap">
+<div id="wrap">
+<div class="wrap_inner">
+<? include $da_adm_path."/inc/top_menu.html"; ?>
+<div id="container">
+  <? include $da_adm_path."/inc/left_menu.html"; ?>
+  <div id="content">
+
+    <? include $da_adm_path."/inc/nav.html"; ?>
+    <form name="frm" id="frm" method="post" action="free_update.php" enctype="multipart/form-data">
+      <input type="hidden" name="mnu_id"	value="<?=$mnu_id?>" />
+      <input type="hidden" name="act"			value="<?=$act?>" />
+      <input type="hidden" name="skey"		value="<?=$skey?>" />
+      <input type="hidden" name="idx"			value="<?=$idx?>" />
+      <input type="hidden" name="page"			value="<?=$page?>" />
+      <table class="verti w1200" >
+        
+      
+		<tr>
+          <td class="trbc w120">전시물 명</td>
+          <td class="tleft pl5"><input type="text" name="tit_c" value="<?=$data[tit_c]?>" class="inputbox w150 ml5"></td>
+		  <td class="trbc w120">학 명</td>
+          <td class="tleft pl5"><input type="text" name="tit_j" value="<?=$data[tit_j]?>" class="inputbox w150 ml5"></td>
+		</tr>
+		<tr>
+          <td class="trbc w120">관리번호</td>
+          <td class="tleft pl5"><input type="text" name="tit_k" value="<?=$data[tit_k]?>" class="inputbox w150 ml5"></td>
+		  <td class="trbc w120">구 분</td>
+          <td class="tleft pl5"><input type="text" name="tit_e" value="<?=$data[tit_e]?>" class="inputbox w150 ml5"></td>
+		</tr>
+		<tr>
+          <td class="trbc w120">전시물 위 치</td>
+          <td class="tleft pl5">
+		  <input type="radio" name="loc" value="2" <?if($data[loc]=="2"){?>checked<?}?> >2층 &nbsp; 
+		  <input type="radio" name="loc" value="3" <?if($data[loc]=="3"){?>checked<?}?> >3층 &nbsp; 
+		  <input type="radio" name="loc" value="4" <?if($data[loc]=="4"){?>checked<?}?> >야외 
+		  </td>
+		  <td class="trbc w120">세부위치</td>
+          <td class="tleft pl5"><input type="text" name="nmtag" value="<?=$data[nmtag]?>" class="inputbox w150 ml5"></td>
+		</tr>
+		<tr>
+          <td class="trbc w120">기본정보</td>
+          <td class="tleft pl5" colspan="3"><textarea name="exp_k" style="width: 550px; height: 60px; margin: 3px;"><?=$data[exp_k]?></textarea></td>
+		</tr>
+		<tr>
+          <td class="trbc w120">생태정보</td>
+          <td class="tleft pl5" colspan="3"><textarea name="exp_e" style="width: 550px; height: 60px; margin: 3px;"><?=$data[exp_e]?></textarea></td>
+		</tr>
+		<tr>
+          <td class="trbc w120">이미지(기본이미지)</td>
+          <td class="tleft pl5"><input type="file" name="img1" class="inputbox w150 ml5"> <?if($data[img1]){?><a href="../../uploaded/<?=$data[img1]?>" target="_blank">[파일확인]</a><?}?></td>
+		  <td class="trbc w120">더보기이미지1</td>
+          <td class="tleft pl5"><input type="file" name="img2" class="inputbox w150 ml5"> <?if($data[img2]){?><a href="../../uploaded/<?=$data[img2]?>" target="_blank">[파일확인]</a><?}?></td>
+		</tr>
+		
+		<tr>
+          <td class="trbc w120">비고</td>
+          <td class="tleft pl5" colspan="3"><textarea name="mno" style="width: 550px; height: 60px; margin: 3px;"><?=$data[mno]?></textarea></td>
+		</tr>
+		
+      </table>
+      <div class="w1200 tcenter">
+        <input type="submit" value="등 록" class="submit btn50 h22 mt10 cur" /> <input type="button" value="목 록" class="btn50 h22 mt10 cur" onclick="location.href='free_list.html?<?=$qstr?>'" />
+      </div>
+    </form>
+  </div>
+</div>
+<? include $da_adm_path."/inc/bottom.html"; ?>

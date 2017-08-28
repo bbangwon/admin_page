@@ -1,0 +1,35 @@
+
+<style>
+.left-sub-group { background:#cfcfdf;}
+.left-sub-group h5 { background:#cfcfdf; color:#666; padding-left:10px; font-size:12px; border-bottom:1px solid #bbb; height: 32px; line-height:32px; }
+.left-sub-group li { color:#666; padding-left:10px; font-size:12px; height: 31px; line-height:32px;}
+.left-sub-group li a { display:inline-block; color:#666 !important; padding:0; margin:0; font-weight:normal !important; border:none; letter-spacing: -1px; }
+.left-sub-group li.on { background:#bfbfdf; color:#666; font-weight:bold !important; border:1px solid #d8d9df; }
+.left-sub-group li.on a, .left-sub-group li:hover { background:#bfbfdf; color:#666; font-weight:bold !important; }
+
+li.title-subtitle { background:#cfcfdf; color:#666; padding-left:10px; font-size:12px; border:none; border-bottom:1px solid #bbb; height: 32px; line-height:32px; font-weight:bold; }
+li:hover.title-subtitle { background:#cfcfdf; color:#666; padding-left:10px; font-size:12px; border:none; border-bottom:1px solid #bbb; height: 32px; line-height:32px; font-weight:bold; }
+</style>		
+<div class="snb">
+	<h2><?=$_MnuTitle?></h2>
+	<ul>
+	<?
+	for($i=0; $i<count($_leftMnu); $i++){
+		$mnu = $_leftMnu[$i];
+    if( substr($mnu_id, 0, 2) == 'tm' && !$loc ){
+    	} else { ?>
+		<li class='<?=${$_leftMnu[$i][mnu_id]."_on"}?>' <?=($mnu_id==$_leftMnu[$i][mnu_id])?'style="height:auto;"':''?> >
+    	<a href='<?=$da_adm_path?>/<?=$mnu[mnu_dir]?>/<?=$mnu[mnu_file]?>&mnu_id=<?=$mnu[mnu_id]?>'><?=$_leftMnu[$i][mnu_nm]?></a>
+      <? // if( $mnu_id == $_leftMnu[$i][mnu_id] && $mnu_id=='gal04' ){ ?>
+      <? if( $_leftMnu[$i][mnu_id] == 'gal04' ){ ?>
+      
+      <? } ?>
+    </li>
+    <? } ?>
+	<?}?>
+	</ul>
+	
+	
+
+
+</div>	

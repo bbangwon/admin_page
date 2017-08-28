@@ -1,0 +1,115 @@
+<?
+	include "_da.php";
+	include $da_adm_path."/inc/head.html";
+
+	if($idx)$data = $dbcon->getOneRow("select * from da_admin where idx = $idx ");
+
+	$mauth = $dbcon->getList("select mnu_pid, mnu_id from da_admin_auth where m_id = '".$data[adm_id]."' ");
+	$mids = array();
+	for($i=0; $i<count($mauth); $i++){
+		$mem_auth .= "|".$mauth[$i][0]."-".$mauth[$i][1]."|";
+		array_push($mids, $mauth[$i][0]);
+	}
+?>
+<script>
+$(document).ready(function(){
+	
+	$('#allchk').on('click',function(){
+		var chkf = $(this).is(":checked");
+		$('.chk').each(function(){	
+			$(this).prop('checked',chkf);
+		});
+	});
+
+	$('.idchk').on('blur',function(){
+		var id = $(this).val();
+		if( id=="<?=$data[MB_ID]?>" )return;
+
+		$.post('id_check.php',{'id':id},function(v){
+			if(v>0){
+				alert("이미 존재하는 아이디 입니다.");
+				$('.idchk').val('').focus();
+			}
+		});
+	});
+
+	
+});
+</script>
+
+<body style="min-width:998px">
+<div class="fix_wrap">
+	<div id="wrap">
+		<div class="wrap_inner"> 
+
+			<? include $da_adm_path."/inc/top_menu.html"; ?>
+			
+			<div id="container">
+
+					<? include $da_adm_path."/inc/left_menu.html"; ?>		
+
+					<div id="content">
+					
+					<? include $da_adm_path."/inc/nav.html"; ?>		
+					
+					<form name="frm" method="post" action="adm_update.php" enctype="multipart/form-data">
+					<input type="hidden" name="mnu_id" value="<?=$mnu_id?>">
+					<input type="hidden" name="act" value="<?=$act?>">
+					<input type="hidden" name="skey" value="<?=$skey?>">
+					<input type="hidden" name="idx" value="<?=$idx?>">
+					<input type="hidden" name="page" value="<?=$page?>">
+					<table class="verti w1000" >
+					<tr>
+						<th width="80">아이디</th>
+						<td class="tleft"><input type="text" class="inputbox w150 ml5 <?if(!$idx){?>idchk<?}?>" <?if($idx){?>readonly<?}?> name="adm_id" value="<?=$data[adm_id]?>"></td>
+						<th width="80">비밀번호</th>
+						<td class="tleft"><input type="password" class="inputbox w150 ml5" name="adm_pw" value="" ></td>
+					</tr>
+					<tr>
+						<th width="80">이름</th>
+						<td class="tleft"><input type="text" class="inputbox w150 ml5" name="adm_nm" value="<?=$data[adm_nm]?>"></td>
+						<th width="80"></th>
+						<td class="tleft"></td>
+					</tr>	
+					
+					<tr>
+						<th width="80">메뉴권한</th>
+						<td class="tleft" colspan="3">
+<?
+						$sql = "select distinct da_menu.mnu_pid, da_menu.mnu_pnm from da_menu";
+						$mmenu = $dbcon->getList($sql);
+
+						for($i=0;$i<count($mmenu);$i++)
+						{
+?>							
+							<input type="checkbox" name="check_menu[]" value="<?=$mmenu[$i][0]?>" <?
+							if(in_array($mmenu[$i][0], $mids))
+								echo "checked";								
+							?>><?=$mmenu[$i][1]?>
+<?
+						}
+?>
+
+						</td>
+					</tr>
+
+					<tr>
+						<th width="80">설명</th>
+						<td class="tleft" colspan="3"><textarea name="adm_mno" style="width: 550px; height: 60px; margin: 3px;"><?=$data[adm_mno]?></textarea></td>
+					</tr>
+					
+					
+						</table>
+						</td>
+					</tr>
+					</table>
+					
+					<div class="w1000 tcenter"><input type="submit" value="등 록" class="btn50 mt10 "></div>
+					</form>
+					
+
+				</div>
+			</div>
+			
+
+	<? include $da_adm_path."/inc/bottom.html"; ?>

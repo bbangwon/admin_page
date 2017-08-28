@@ -1,0 +1,88 @@
+	<?
+	$tit_msg = "메모";
+	if($tb_id=="gallery")$tit_msg = "Youtube";
+	if($idx){
+		$rst = "";
+    $sql = "select idx, tb_id, f_ori_name, f_save_name, f_size, f_ext, f_width, f_height, tmp_no, f_mno from da_file where tb_id = '".$tb_id."' and tb_idx = '".$idx."' AND SUBSTR(f_ori_name, 1, 6)!='thumb_' ";
+		$list = $dbcon->getList($sql);
+		$len = count($list);
+		for($i=0; $i<$len; $i++){
+			$row = $list[$i];
+			$rst .= "<span class='".$row[idx]."'>";
+			$rst .= $row[f_save_name]. "(".$row[f_size]."kb) ";
+			if( isImage($row[f_ext]) ){
+				$rst .= " 사이즈: ".$row[f_width]."x".$row[f_height]." <a href='javascript:preview(".$row[idx].");' >[미리보기]</a> ";
+				$rst .= " <a href='/uploaded/".$row[tb_id]."/".$row[f_ori_name]."' target='_blank' >[원본보기]</a> ";
+        if ( $thumbnail == "Y" ){
+					$rst .= ' <a href="javascript:setThumbnail(\''.$tb_id.'\', '.$idx.', \''.$row[f_ori_name].'\');" >[썸네일]</a> ';
+        }
+			}
+		    
+			$rst .= "<a href=\"javascript:fileDown('".$row[tb_id]."','".$row[f_ori_name]."');\" >[다운]</a> <a href='javascript:fileDel(".$row[idx].");' >[삭제]</a><br>";
+			$rst .= $tit_msg.": <input type='text' name='mno' class='w250 mnotxt' idx='".$row[idx]."' value='".$row[f_mno]."'><br>";
+			$rst .= "</span>";
+			$tmp_no = $tmp_no?$tmp_no:$row[tmp_no];
+		}
+    if($i==0) $tmp_no = rand(1,9999999);
+
+    $sql = "SELECT thumbnail FROM da_".$tb_id." WHERE idx=".$idx;
+    $thumbfnm = $dbcon->getOneCol($sql);
+    if( $thumbfnm ) $thumb[0] = "/uploaded/thumb/$tb_id/$thumbfnm";
+    else $thumb = findImgUrl(getOneImg2($tb_id, $idx, 70, 80));
+	}else{
+		$tmp_no = rand(1,9999999);	
+  }
+	?>
+	<tr>
+	  <td class="trbc w100">첨부파일</td>
+	  <td class="tleft pt5 pb5">
+		<script>
+		$(document).ready(function(){
+			$('.mnotxt').on('blur',function(){ 
+				var idx = $(this).attr('idx');
+				var mno = $(this).val();
+				if( idx && mno ){
+					$.post('../inc/file_mno_update.php',{'idx':idx, 'mno':mno},function(v){ 
+						if(v==1)showTmsg("등록되었습니다.",1000);
+						else alert(v);
+					});
+				}
+			});
+		});
+
+		function setThumbnail(tb_id, tb_idx, fnm){
+			var vurl = "../inc/file_thumbnail.php";
+			
+			$.post( vurl, { tb_id:tb_id, tb_idx:tb_idx, fnm:fnm, thumbW:"<?=$thumbW?>", thumbH:"<?=$thumbH?>" }, function(v){
+				var res = $.parseJSON(v);
+				if ( res.success == "true" ) {
+					alert("썸네일이 등록되었습니다.");
+					$("#<?=$tb_id?>_thumbnail").attr( "src", "/uploaded/thumb/" + tb_id + "/thumb_" + fnm );
+				} else if ( res.success == "false" ) {
+					alert(res.msg);
+					if( res.thumbnail == "true" ){
+						$("#<?=$tb_id?>_thumbnail").attr( "src", "/uploaded/thumb/" + tb_id + "/thumb_" + fnm );
+					}
+				} else {
+					alert("오류 \n\nERROR::" + v);
+				}
+			});
+		}
+		</script>
+		<style>
+		.file-inc-prev-image { max-width:225px !important; max-height:225px !important; width:auto; height:auto; margin:auto; top:0px; left:0px; right:0px; bottom:0px; position:absolute; }
+		.file-inc-thumbnail { max-width:70px !important; max-height:80px !important; width:auto; height:auto; margin:auto; top:0px; left:0px; right:0px; bottom:0px; position:absolute; border-right:1px solid #666; border-bottom:1px solid #666; padding:1px; }
+		</style>
+		&nbsp;
+	  <?if(!$is_view){?><input type="button" class="btn70" value="파일 등록" onclick="showFileUpload('<?=$tb_id?>','<?=$tmp_no?>')"/><?}?>
+	  <div>
+	  <div id="preview" class="tleft p5 ml9 mt5" style="background-color: #F3F3F3; border: 1px solid #494949; width:410px; height: 225px; overflow-y: auto; line-height: 20px; float: left;"><?=$rst?></div>
+	  <div id="ipreview" class="tcenter p5 ml9 mt5" style="background-color: #F3F3F3; border: 1px solid #494949; width: 225px; height: 225px; float: right; z-index:10; position:relative;">
+    	<img id="previmg" src="" class="file-inc-prev-image" onerror="this.src='<?=$da_path?>/img/common/no_img.jpg'" width="225" height="225">
+      <? if( $thumbnail == "Y" ){ ?>
+      <div style="position:absolute; top:0px; left:0px; z-index:20; width:73px; height:82px; "><img id="<?=$tb_id?>_thumbnail" src="<?=$thumb[0]?>" class="file-inc-thumbnail" width="70" height="80" /></div>
+      <? } ?>
+    </div>
+	  </div>
+	  </td>
+	</tr>

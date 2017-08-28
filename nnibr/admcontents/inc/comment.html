@@ -1,0 +1,42 @@
+      <?
+      if ( $idx ) {
+        $sql = "select idx, m_id, m_nm, c_cont, in_date from da_comment where tb_id = '".$tb_id."' and tb_idx = ".$idx." order by idx desc ";
+        $list = $dbcon->getList($sql);
+        $len = count($list);
+      }
+    
+      ?>
+    <br />
+    <form name="cfrm" method="post" action="<?=$da['admPath']?>inc/comment_update.php" target="hiddenframe">
+	<input type="hidden" name="tb_id" value="<?=$tb_id?>" />
+	<input type="hidden" name="tb_idx" value="<?=$idx?>" />
+	<input type="hidden" name="act" value="" />
+	<table class=" w800" >
+	<tr>
+			<td class="w100 c"><?=get_session("da_ss_adm_nm")?></td>
+	<td colspan="2" class="p5 tleft"><textarea name="c_cont" width="100%" style="IME-MODE:active; width:100%;"  class="resize-none" cols="100" rows="5"  ></textarea></td>
+			<td class="r w70"><input type="submit" value="등 록" class="btn70" style="height:67px;" /></td>
+	</tr>
+	</table>
+	</form>
+		
+    <table class="verti w800" >
+      <? for($i=0; $i<$len; $i++){ $cmt = $list[$i]; ?>
+      <tr id="cmt_<?=$cmt[0]?>">
+        <td class="first trbc w120">
+	        <p><?=$cmt["m_nm"]?></p>
+	        <p style="font-size:10px;"><?=$cmt["m_id"]?></p>
+        </td>
+        <td class="tleft p2"><?=nl2br($cmt[3])?></td>
+        <td class=" w50">
+          <input type="button" value="X" class="btn30 w30 h22 " onclick="cmtDel('<?=$cmt[0]?>')" />
+        </td>
+        <td class="trbc w100"><?=$cmt[4]?></td>
+      </tr>
+      <? } ?>
+      <? if(!$len){ ?>
+      <tr>
+        <td colspan="3" class="c first">등록된 댓글이 없습니다.</td>
+      </tr>
+      <? } ?>
+    </table>

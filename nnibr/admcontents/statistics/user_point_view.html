@@ -1,0 +1,116 @@
+<?
+	include "_da.php";
+	include $da_adm_path."/inc/head.html";
+
+	$qstr = "&skey=".$skey."&mnu_id=".$mnu_id."&skind=".$skind."&idx=".$idx;
+	$total_count = $cnt = $dbcon->getOneCol("select count(*) from nnibr_point where user_id=".$idx);
+?>
+
+<body style="min-width:998px">
+<div class="fix_wrap">
+	<div id="wrap">
+		<div class="wrap_inner"> 
+
+			<? include $da_adm_path."/inc/top_menu.html"; ?>
+
+			<div id="container">
+
+					<? include $da_adm_path."/inc/left_menu.html"; ?>		
+
+					<div id="content">
+					
+					<? include $da_adm_path."/inc/nav.html"; ?>		
+		
+					<form name="lfrm" method="post" action="chk_del.php" target="hiddenframe">
+					<input type="hidden" name="null">
+
+					<div class="list_body">
+						<!-- Data List Start -->
+						<table class="verti" style="width: 900px;" >
+							
+							<thead>
+								<tr>
+									<th class="w60"><span><a href='#'>No</a></span></th>
+									<th class="w120"><span><a href='#'>내용</a></span></th>
+									<th class="w80"><span><a href='#'>획득포인트</a></span></th>
+									<th class="w120"><span><a href='#'>획득시간</a></span></th>
+								</tr>
+							</thead>
+							<tbody class='list'>
+								<?								
+								$rows = 10; //한 화면에 뿌려질 리스트갯수
+								$total_page  = ceil($total_count / $rows);
+								if (!$page) $page = 1;
+								$from_record = ($page - 1) * $rows;
+								
+								$query= "select * from nnibr_point where user_id = ".$idx. " order by get_time desc";
+								$query = $query." limit ".$from_record." , ".$rows;																			
+
+								$list = $dbcon->getList($query);
+								$len = count($list);
+								$pagelist = get_paging(10, $page, $total_page, "?$qstr&page=");							
+								for($i=0; $i<$len; $i++){
+									$no = $total_count-$from_record-$i;
+									$row = $list[$i];
+
+									switch($row[type])
+									{
+										case 0:
+											$type = "설치";
+											break;
+										case 1:
+											$type = "종획득";
+											break;
+										case 2:
+											$type = "출석";
+											break;
+										case 3:
+											$type = "먹이";
+											break;
+										case 4:
+											$type = "게임포인트";
+											break;
+										case 5:
+											$type = "레벨업";
+											break;
+										case 6:
+											$type = "모든종";
+											break;
+										case 7:
+											$type = "재방문";
+											break;
+									}
+
+								?>
+								<tr class="list<?=($i%2)?>">
+									<td class="tcenter"><?=$no?></td>
+									<td class="tcenter"><?=$type?></td>
+									<td class="tcenter"><?=$row[point]?></td>
+									<td class="tcenter"><?=$row[get_time]?></td>
+								</tr>
+								<?}?>
+							</tbody>
+						</table>
+						<!-- Data List End -->
+
+						<!-- Pageing Start -->
+						<div class="list_btm" style="width: 900px;" >
+							<div style="width: 900px; float:center;"  >
+							<center> <?=$pagelist?></center>
+							</div>
+						</div>
+						</form>
+						<!-- Pageing End -->
+									<div class="w900 tcenter">
+        		<input type="button" value="목 록" class="btn50 h22 mt10 cur" onclick="location.href='user_list.html?<?=$qstr?>'" />
+      		</div>
+
+					</div>
+
+					<!-- Body End -->					</div>
+					<!-- CONTENT End -->
+
+			</div>
+			<!-- CONTAINER End -->
+
+	<? include $da_adm_path."/inc/bottom.html"; ?>

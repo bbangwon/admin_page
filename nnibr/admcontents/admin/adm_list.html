@@ -1,0 +1,119 @@
+<?
+	include "_da.php";
+	include $da_adm_path."/inc/head.html";
+	include $da_path."/libs/admin.lib.php";
+
+	$qstr = "&skey=".$skey."&mnu_id=".$mnu_id;
+	$where = " and idDel = '0'	 ";
+	if( $skey ) $where = " and ( adm_id like '%".$skey."%' or adm_nm like '%".$skey."%' ) ";
+	$total_count = getAdminCount($where);
+
+?>
+<script>
+function check_status(no, status){
+	$.post('adm_update.php',{'act':'s','no':no,'status':status},function(v){ 
+		if(v==1)showTmsg("처리되었습니다.",1000);
+	});
+}
+
+$(document).ready(function(){
+	
+});
+</script>
+
+<body style="min-width:998px">
+<div class="fix_wrap">
+	<div id="wrap">
+		<div class="wrap_inner"> 
+
+			<? include $da_adm_path."/inc/top_menu.html"; ?>
+
+			<div id="container">
+
+					<? include $da_adm_path."/inc/left_menu.html"; ?>		
+
+					<div id="content">
+					
+					<? include $da_adm_path."/inc/nav.html"; ?>		
+
+					
+					<form name="frm" method="get"   autocomplete="off" >
+					<input type="hidden" name="mnu_id" value="<?=$mnu_id?>">
+					<div class="list_body" style="width: 700px;">
+						<table class="verti"  >
+			 				<tr class="list0">
+								<td class="tcenter" >
+								<input type="text" name="skey"  id="skey" class="inputbox w250" value="<?=$skey?>"> <input type="submit" class="btn50" value="검 색 ">
+								</td>
+							</tr>
+						</table>					 
+					</div>
+					</form>
+			
+					<div class="list_body">
+					<div class="pt10"  style="width: 700px;">
+						<span class="fleft"><b><?=$total_count?>  건</b></span>
+						<span class="fright mr10 mb5"style="float: right; margin-right: 10px; margin-bottom: 5px;"><input type="button" value="등 록" class="btn50" onclick="location.href='adm_write.html?mnu_id=<?=$mnu_id?>'"></span>
+					</div>
+						<!-- Data List Start -->
+						<table class="verti" style="width: 700px;">
+							<thead>
+								<tr>
+									<th width="40"><span><a href='#'>NO</a></span></th>
+									<th width="70"><span><a href='#'>이름</a></span></th>
+									<th width="100"><span><a href='#'>아이디</a></span></th>
+									<th width=""><span><a href='#'>비고</a></span></th>
+									<th width="60"><span><a href='#'>수정</a></span></th>
+									<th width="60"><span><a href='#'>삭제</a></span></th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody class='list'>
+
+							<?
+							$rows = 20; //한 화면에 뿌려질 리스트갯수
+							$total_page  = ceil($total_count / $rows);
+							if (!$page) $page = 1;
+							$from_record = ($page - 1) * $rows;
+							$list = getAdminList("*", $where, "adm_level desc", $from_record, $rows);
+							$len = count($list);
+							$pagelist = get_paging(10, $page, $total_page, "?$qstr&page=");
+							for($i=0; $i<$len; $i++){
+								$no = $total_count-$from_record-$i;
+								$row = $list[$i];
+								
+							?>
+								<tr class="list0">
+									<td class="tcenter"><?=$no?></td>
+									<td class="tcenter"><?=$row[adm_nm]?></td>
+									<td class="tcenter"><?=$row[adm_id]?></td>
+									<td class="tcenter"><?=nl2br($row[adm_mno])?></td>
+									<td class="tcenter"><input type="button" value="수 정" class="btn50" onclick="location.href='adm_write.html?idx=<?=$row[idx].$qstr?>&act=u&page=<?=$page.$qstr?>'"></td>
+									<td class="tcenter"><input type="button" value="삭 제" class="btn50" onclick="delProc('adm_update.php?idx=<?=$row[idx].$qstr?>&act=d&page=<?=$page.$qstr?>')"></td>
+									<td></td>
+								</tr>
+							<?}?>
+
+
+							</tbody>
+						</table>
+						<!-- Data List End -->
+
+						<!-- Pageing Start -->
+						<div class="list_btm" style="width: 700px;">
+							<div style="float:center; width: 700px;" >
+							<center> <?=$pagelist?></center>
+							</div>
+						</div>
+						<!-- Pageing End -->
+
+					</div>
+
+					<!-- Body End -->					</div>
+					<!-- CONTENT End -->
+
+			</div>
+			<!-- CONTAINER End -->
+
+
+	<? include $da_adm_path."/inc/bottom.html"; ?>

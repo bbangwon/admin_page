@@ -1,0 +1,60 @@
+<?
+	include "_da.php";
+	include $da_adm_path."/inc/head.html";
+//	if($idx)$data = $dbcon->getOneRow("select * from da_data where idx = $idx ");
+//	$qstr = "&skey=".$skey."&mnu_id=".$mnu_id."&page=".$page;
+?>
+<script>
+$(document).ready(function(){
+
+<?
+if($success == "1"){
+?>
+  alert('푸시메시지 보내기에 성공했습니다.');
+<?
+} else if($error == "1") {
+?>
+  alert('푸시메시지 보내기에 실패했습니다.');
+<?
+}
+?>
+
+});
+</script>
+<body style="min-width:998px">
+<div class="fix_wrap">
+<div id="wrap">
+<div class="wrap_inner">
+<? include $da_adm_path."/inc/top_menu.html"; ?>
+<div id="container">
+  <? include $da_adm_path."/inc/left_menu.html"; ?>
+  <div id="content">
+
+    <? include $da_adm_path."/inc/nav.html"; ?>
+    <form name="frm" id="frm" method="post" action="push.php" enctype="multipart/form-data">
+      <table class="verti w1200" >       
+		<tr>
+          <td class="trbc w120">영문제목</td>
+          <td class="tleft pl5"><input type="text" name="e_tit" class="inputbox w500 ml5"></td>
+		</tr>
+				<tr>
+          <td class="trbc w120">영문푸시메시지</td>
+          <td class="tleft pl5"><textarea name="e_pmsg" style="width: 550px; height: 100px; margin: 3px;"></textarea></td>
+		</tr>
+
+		<tr>
+          <td class="trbc w120">한글제목</td>
+          <td class="tleft pl5"><input type="text" name="k_tit" class="inputbox w500 ml5"></td>
+		</tr>
+				<tr>
+          <td class="trbc w120">한글푸시메시지</td>
+          <td class="tleft pl5"><textarea name="k_pmsg" style="width: 550px; height: 100px; margin: 3px;"></textarea></td>
+		</tr>
+      </table>
+      <div class="w1200 tcenter">
+        <input type="submit" value="보내기" class="submit btn50 h22 mt10 cur" />
+      </div>
+    </form>
+  </div>
+</div>
+<? include $da_adm_path."/inc/bottom.html"; ?>

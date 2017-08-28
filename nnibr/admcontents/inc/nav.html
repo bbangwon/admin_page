@@ -1,0 +1,12 @@
+
+<?
+if($_pMnuId=="board" && $b_id){
+  $addMnu = $dbcon->getOneCol(" select b_nm from da_bbs_info where b_id = '".$b_id."' ");
+  $addMnu = " > ".$addMnu;
+}
+?>
+
+<div id="content_head">
+	<h3><?=$_Mnu[mnu_nm].$addMnu?> <?=$nav_str?></h3>		
+	<p class="path"><a><?=$_Mnu[mnu_pnm]?></a> > <?=$_Mnu[mnu_nm].$addMnu?> </p></h3>
+</div>

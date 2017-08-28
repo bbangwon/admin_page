@@ -1,0 +1,108 @@
+<?
+	include "_da.php";
+  include $da_adm_path."/inc/head.html";
+  
+  $usercount = $dbcon->getOneCol("select count(*) from nnibr_user");
+  $visitcount = $dbcon->getOneCol("select count(*) from nnibr_visit");
+  $point = $dbcon->getOneCol("select sum(point) from nnibr_point");
+  if($point == "") $point = 0;
+
+  $td = "오늘";
+  if($datepicker_from || $datepicker_to)
+    $td = "기간 중";  
+  
+  $dateWhere = "date(timestamp) = date(now())";
+  if($datepicker_from)
+  {
+    $dateWhere = "date(timestamp) >= '".$datepicker_from."'";
+    if($datepicker_to)
+    {
+      $dateWhere .= " and date(timestamp) <= '".$datepicker_to."'";
+    }
+  }
+  else if($datepicker_to)
+    $dateWhere = "date(timestamp) <= '".$datepicker_to."'";
+
+  $visittoday = $dbcon->getOneCol("select count(*) from nnibr_visit where ".$dateWhere);
+
+  $getBiology = $dbcon->getOneCol("select count(*) from nnibr_play where ".$dateWhere);
+  if($getBiology == "") $getBiology = 0;
+
+
+  $dateWhere = "date(get_time) = date(now())";
+  if($datepicker_from)
+  {
+    $dateWhere = "date(get_time) >= '".$datepicker_from."'";
+    if($datepicker_to)
+    {
+      $dateWhere .= " and date(get_time) <= '".$datepicker_to."'";
+    }
+  }
+  else if($datepicker_to)
+    $dateWhere = "date(get_time) <= '".$datepicker_to."'";
+
+
+
+  $todaypoint = $dbcon->getOneCol("select sum(point) from nnibr_point where ".$dateWhere);
+  if($todaypoint == "") $todaypoint = 0;
+
+?>
+<script>
+  $( function() {
+    $("#datepicker_from").datepicker({
+      dateFormat: 'yy-mm-dd'
+    });
+    $("#datepicker_to").datepicker({
+      dateFormat: 'yy-mm-dd'
+    });
+  } );
+  </script>
+
+<body style="min-width:998px">
+<div class="fix_wrap">
+<div id="wrap">
+<div class="wrap_inner">
+<? include $da_adm_path."/inc/top_menu.html"; ?>
+<div id="container">
+  <? include $da_adm_path."/inc/left_menu.html"; ?>
+  <div id="content">
+    <? include $da_adm_path."/inc/nav.html"; ?>
+    
+    <form name="frm" method="get" autocomplete="off" >
+      <input type="hidden" name="mnu_id" value="<?=$mnu_id?>">
+      <div class="list_body">
+        <table class="verti"  style="width: 900px;" >
+          <tr class="list0">
+            <td class="tcenter" >
+              <input type="text" id="datepicker_from" name="datepicker_from" class="inputbox" value="<?=$datepicker_from?>"> 
+              ~ <input type="text" id="datepicker_to" name="datepicker_to" class="inputbox" value="<?=$datepicker_to?>">
+              <input type="submit" class="btn50" value="검색">
+            </td>
+          </tr>
+        </table>					 
+      </div>
+      </form>
+
+      <table class="verti w800" >
+		<tr>
+          <td class="trbc w80">총 유저수</td>
+          <td class="tleft pl5"><?=$usercount?></td>
+		      <td class="trbc w80">총 방문수</td>
+          <td class="tleft pl5"><?=$visitcount?></td>
+		      <td class="trbc w80">총 포인트</td>
+          <td class="tleft pl5"><?=$point?></td>
+		</tr>
+		<tr>
+ 		      <td class="trbc w80"><?=$td?> 종 획득수</td>
+          <td class="tleft pl5"><?=$getBiology?></td>
+          <td class="trbc w80"><?=$td?> 방문수</td>
+          <td class="tleft pl5"><?=$visittoday?></td>
+          <td class="trbc w80"><?=$td?> 획득된 포인트</td>
+          <td class="tleft pl5"><?=$todaypoint?></td>
+    </tr>
+      </table>
+  </div>
+  
+</div>
+
+<? include $da_adm_path."/inc/bottom.html"; ?>

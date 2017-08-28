@@ -1,0 +1,21 @@
+
+<div id="header">
+  <div class="main">
+    <h1><a href="/nnibr/admcontents/home"><?=$da['siteName']?></a></h1>
+    <div class="menulist">
+    <ul id="gnb" class="gnb">
+	    <li class="on"><a href="/nnibr/admcontents/home" class="w30 c">홈</a></li>
+      <?
+      for($i=0; $i<count($_topMnu); $i++){
+	      $mnu = $_topMnu[$i];
+      ?>
+      <li id='dav_<?=$i?>00' class='<?=${$mnu[mnu_pid]."_on"}?>' ><a href="<?=$da_adm_path?>/<?=$mnu[mnu_dir]?>/<?=$mnu[mnu_file]?>&mnu_id=<?=$mnu[mnu_id]?>"><?=$mnu[mnu_pnm]?></a></li>
+      <? } ?>
+    </ul>
+    </div>
+    <div class="gnb_btn">
+	<a class="btn_homepage" href="<?=$da_path?>" title="홈페이지">홈페이지</a>
+	<a class="btn_logout" href="<?=$da_adm_path?>/logout.php" title="로그아웃">로그아웃</a>
+	</div>
+  </div>
+</div>

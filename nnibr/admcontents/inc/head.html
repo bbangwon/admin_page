@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title><?=$da['siteName']?></title>
+</head>
+<!--<script type="text/javascript" src="<?=$da_path?>/js/jquery-1.10.2.js"></script>-->
+<script type="text/javascript" src="<?=$da_path?>/js/common.js"></script>
+<script type="text/javascript" src="<?=$da_path?>/js/adm.common.js"></script>
+<!--<script type="text/javascript" src="<?=$da_path?>/js/jquery-ui-1.10.3.custom.min.js"></script>-->
+
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<link rel="stylesheet" type="text/css" href="<?=$da_path?>/css/admin/style.css" />
+<!--<link rel="stylesheet" type="text/css" href="<?=$da_path?>/css/ui-lightness/jquery-ui-1.10.3.custom.min.css" />-->
+<div id="topmsg" style="position: absolute; left: 500px; top: 100px; width: 350px; height: 100px; background-color: #F3F3F3; border: 2px solid  #303030; z-index: 999; display:none; text-align: center; padding-top: 30px; font-weight: bold;"></div>
+<script>
+function showTmsg(msg, sec){
+	
+	var de = document.documentElement;
+	var b = document.body;
+	var now = {};
+	var top = document.all ? (!de.scrollTop ? b.scrollTop : de.scrollTop) : (window.pageYOffset ? window.pageYOffset : window.scrollY);
+	if(msg=="")msg = "수정되었습니다.";
+	$('#topmsg').html(msg).css({'top':top+'px'}).show();
+	setTimeout("closeTmsg()",sec);
+}
+function closeTmsg(){
+	$('#topmsg').html("").hide();
+}
+</script>

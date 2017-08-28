@@ -1,0 +1,58 @@
+<?
+	include "_da.php";
+	include $da_adm_path."/inc/head.html";
+	if(!$idx)alert("Erro1");
+	
+	$data = $dbcon->getOneRow("select * from da_admin where idx = $idx ");
+?>
+
+<body style="min-width:998px">
+<div class="fix_wrap">
+	<div id="wrap">
+		<div class="wrap_inner"> 
+
+			<? include $da_adm_path."/inc/top_menu.html"; ?>
+			
+			<div id="container">
+
+					<? include $da_adm_path."/inc/left_menu.html"; ?>		
+
+					<div id="content">
+					
+					<? include $da_adm_path."/inc/nav.html"; ?>		
+					
+					<table class="verti w800" >
+					<tr>
+						<th width="100">이름</th>
+						<td class="tleft">&nbsp;<?=$data[adm_nm]?></td>
+					</tr>
+					<tr>
+						<th width="100">아이디</th>
+						<td class="tleft">&nbsp;<?=$data[adm_id]?></td>
+					</tr>
+					<tr>
+						<th width="100">비밀번호</th>
+						<td class="tleft">&nbsp;***</td>
+					</tr>
+					<tr>
+						<th width="100">권한</th>
+						<td class="tleft">&nbsp;
+						<?
+						for($i=0; $i<count($_topMnu); $i++){
+							$mnu = $_topMnu[$i];
+						?>
+						<?if(strpos($data[adm_auth], $mnu[mnu_pid]."|" ) > -1 ){?><?=$mnu[mnu_pnm]?><?}?> &nbsp;|&nbsp;
+						<?}?>
+						</td>
+					</tr>
+					</table>
+					
+					<div class="w800 tcenter"><input type="button" value="리 스 트" class="btn50 mt10 " onclick="location.href='adm_list.html?mnu_id=<?=$mnu_id?>&skey=<?=$skey?>&page=<?=$page?>'"></div>
+					</form>
+					
+
+				</div>
+			</div>
+			
+
+	<? include $da_adm_path."/inc/bottom.html"; ?>

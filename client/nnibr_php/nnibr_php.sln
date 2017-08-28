@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2017
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nnibr_php.Plugins", "nnibr_php.Plugins.csproj", "{0B20B34E-6F8E-1F57-FDD3-D3390B2EC60E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nnibr_php", "nnibr_php.csproj", "{452A7B11-CC2E-7165-E1D0-002D935ACA21}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0B20B34E-6F8E-1F57-FDD3-D3390B2EC60E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B20B34E-6F8E-1F57-FDD3-D3390B2EC60E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B20B34E-6F8E-1F57-FDD3-D3390B2EC60E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B20B34E-6F8E-1F57-FDD3-D3390B2EC60E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{452A7B11-CC2E-7165-E1D0-002D935ACA21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{452A7B11-CC2E-7165-E1D0-002D935ACA21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{452A7B11-CC2E-7165-E1D0-002D935ACA21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{452A7B11-CC2E-7165-E1D0-002D935ACA21}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

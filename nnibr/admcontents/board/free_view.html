@@ -1,0 +1,70 @@
+<?
+	include "_da.php";
+	include $da_adm_path."/inc/head.html";
+	if($idx)$data = $dbcon->getOneRow("select * from da_data where idx = $idx ");
+	$qstr = "&skey=".$skey."&mnu_id=".$mnu_id."&page=".$page;
+?>
+<script>
+$(document).ready(function(){
+	
+});
+</script>
+
+<body style="min-width:998px">
+<div class="fix_wrap">
+<div id="wrap">
+<div class="wrap_inner">
+<? include $da_adm_path."/inc/top_menu.html"; ?>
+<div id="container">
+  <? include $da_adm_path."/inc/left_menu.html"; ?>
+  <div id="content">
+
+    <? include $da_adm_path."/inc/nav.html"; ?>
+  
+      <table class="verti w800" >
+        
+      
+		<tr>
+          <td class="trbc w80">전시물 명</td>
+          <td class="tleft pl5"><?=$data[tit_c]?></td>
+		  <td class="trbc w80">학 명</td>
+          <td class="tleft pl5"><?=$data[tit_j]?></td>
+		</tr>
+		<tr>
+          <td class="trbc w80">관리번호</td>
+          <td class="tleft pl5"><?=$data[tit_k]?></td>
+		  <td class="trbc w80">구 분</td>
+          <td class="tleft pl5"><?=$data[tit_e]?></td>
+		</tr>
+		<tr>
+          <td class="trbc w80">전시물 위치</td>
+          <td class="tleft pl5"><?=$data[loc]?></td>
+		  <td class="trbc w80">세부위치</td>
+          <td class="tleft pl5"><?=$data[nmtag]?></td>
+		</tr>
+		<tr>
+          <td class="trbc w80">기본 정보</td>
+          <td class="tleft pl5" colspan="3"><?=nl2br($data[exp_k])?></td>
+		</tr>
+		<tr>
+          <td class="trbc w80">생태 정보</td>
+          <td class="tleft pl5" colspan="3"><?=nl2br($data[exp_e])?></td>
+		</tr>
+		<tr>
+          <td class="trbc w80">이미지1</td>
+          <td class="tleft pl5"><?if($data[img1]){?><a href="../../uploaded/<?=$data[img1]?>" target="_blank">[파일확인]</a><?}?></td>
+		  <td class="trbc w80">이미지2</td>
+          <td class="tleft pl5"><?if($data[img2]){?><a href="../../uploaded/<?=$data[img2]?>" target="_blank">[파일확인]</a><?}?></td>
+		</tr>
+		<tr>
+          <td class="trbc w80">비고</td>
+          <td class="tleft pl5" colspan="3"><?=nl2br($data[mno])?></td>
+		</tr>
+		
+      </table>
+      <div class="w800 tcenter">
+        <input type="button" value="목 록" class="btn50 h22 mt10 cur" onclick="location.href='free_list.html?<?=$qstr?>'" />
+      </div>
+  </div>
+</div>
+<? include $da_adm_path."/inc/bottom.html"; ?>

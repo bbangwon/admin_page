@@ -1,0 +1,83 @@
+<?
+	include "_da.php";
+	include $da_adm_path."/inc/head.html";
+	
+	$qstr = "&skey=".$skey."&mnu_id=".$mnu_id."&skind=".$skind;	
+	$total_count = $cnt = $dbcon->getOneCol("select count(*) from nnibr_visit where user_id=".$idx);
+?>
+
+<body style="min-width:998px">
+<div class="fix_wrap">
+	<div id="wrap">
+		<div class="wrap_inner"> 
+
+			<? include $da_adm_path."/inc/top_menu.html"; ?>
+
+			<div id="container">
+
+					<? include $da_adm_path."/inc/left_menu.html"; ?>		
+
+					<div id="content">
+					
+					<? include $da_adm_path."/inc/nav.html"; ?>		
+		
+					<form name="lfrm" method="post" action="chk_del.php" target="hiddenframe">
+					<input type="hidden" name="null">
+
+					<div class="list_body">
+						<!-- Data List Start -->
+						<table class="verti" style="width: 500px;" >
+							
+							<thead>
+								<tr>
+									<th class="w60"><span><a href='#'>No</a></span></th>
+									<th class="w120"><span><a href='#'>방문일자</a></span></th>
+								</tr>
+							</thead>
+							<tbody class='list'>
+								<?								
+								$rows = 10; //한 화면에 뿌려질 리스트갯수
+								$total_page  = ceil($total_count / $rows);
+								if (!$page) $page = 1;
+								$from_record = ($page - 1) * $rows;
+								
+								$query= "select * from nnibr_visit where user_id = ".$idx. " order by timestamp desc";
+								$query = $query." limit ".$from_record." , ".$rows;																			
+
+								$list = $dbcon->getList($query);
+								$len = count($list);
+								$pagelist = get_paging(10, $page, $total_page, "?$qstr&page=");							
+								for($i=0; $i<$len; $i++){
+									$no = $total_count-$from_record-$i;
+									$row = $list[$i];
+								?>
+								<tr class="list<?=($i%2)?>">
+									<td class="tcenter"><?=$no?></td>
+									<td class="tcenter"><?=$row[timestamp]?></td>
+								</tr>
+								<?}?>
+							</tbody>
+						</table>
+						<!-- Data List End -->
+
+						<!-- Pageing Start -->
+						<div class="list_btm" style="width: 500px;" >
+							<div style="width: 500px; float:center;"  >
+							<center> <?=$pagelist?></center>
+							</div>
+						</div>
+						</form>
+						<!-- Pageing End -->
+									<div class="w500 tcenter">
+        		<input type="button" value="목 록" class="btn50 h22 mt10 cur" onclick="location.href='user_list.html?<?=$qstr?>'" />
+      		</div>
+
+					</div>
+
+					<!-- Body End -->					</div>
+					<!-- CONTENT End -->
+
+			</div>
+			<!-- CONTAINER End -->
+
+	<? include $da_adm_path."/inc/bottom.html"; ?>

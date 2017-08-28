@@ -1,0 +1,64 @@
+<?
+	include "_da.php";
+	include $da_adm_path."/inc/head.html";
+	if(!$tb_id)alert_close("잘못된 방법입니다.");
+?>
+<script src="<?=$da_path?>/js/jquery.form.js"></script>
+<script>
+$(document).ready(function(){
+
+	$('.prvfile').on('change',function(){
+		
+		var opts = { 
+			url: 'file_update.php',
+			data: {tmp_no:'<?=$tmp_no?>', tb_id:'<?=$tb_id?>', col:'add_file'},
+			success: function(responseText, statusText, xhr, $form){ 
+				$('#preview').append(responseText+"<br>");
+			}
+		}; 
+	
+		$('#frm').ajaxSubmit(opts);
+		$(this).val('');
+	});
+
+	$('#submit').on('click',function(){
+		var op = opener.document;
+		op.frm.tmp_no.value = "<?=$tmp_no?>";
+		opener.showUploadedFiles("<?=$tmp_no?>");
+		self.close();
+	});
+});
+
+
+</script>
+
+<body >
+  <div id="pcontent">
+  <form name="frm" id="frm" method="post" action="file_update.php" enctype="multipart/form-data">
+  <input type="hidden" name="tmp_no" value="<?=$tmp_no?>">
+  <input type="hidden" name="tb_id" value="<?=$tb_id?>">
+
+  <table width="635" border="0">
+  <tr>
+	<td class="w400" valign="top">
+		<table class="verti w400" id="files">
+        <tr>
+          <td class="trbc w80">파일첨부</td>
+          <td class="tleft ">&nbsp;<input type="file" class="inputbox h16 required prvfile" name="add_file"  /></td>
+        </tr>
+		<tr>
+			<td colspan="2">
+			<div id="preview" class="tleft p5" style="background-color: #F3F3F3; border: 1px solid #494949; width:390px; height: 220px; overflow-y: auto; line-height: 20px; "></div>
+			</td>
+		</tr>
+        </table>
+	</td>
+	<td class="tcenter" width="235 "><div id="ipreview" class="tcenter mt40" style="background-color: #F3F3F3; border: 1px solid #494949; width: 225px; height: 225px; "><img id="previmg" src="" onerror="this.src='<?=$da_path?>/img/common/no_img.jpg'" width="225" height="225"></div></td>
+  </tr>
+  </table>
+
+  <div class="tright mr15"><input type="button" value="적 용" id="submit" class="submit btn50 h22 mt10 cur" /></div>
+</form>
+</div>
+</body>
+
